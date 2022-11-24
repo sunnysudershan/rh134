@@ -1,0 +1,13 @@
+skopeo inspect docker://registry.redhat.io/ubi8/php-72 | grep \"description
+FATA[0000] Error parsing image name "docker://registry.redhat.io/ubi8/php-72": unable to retrieve auth token: invalid username/password: unauthorized: Please login to the Red Hat Registry using your Customer Portal credentials. Further instructions can be found here: https://access.redhat.com/RegistryAuthentication
+
+[root@demo01 ~]# find / -iname auth.json
+/run/containers/0/auth.json
+/run/user/1000/containers/auth.json
+
+[root@demo01 ~]# mkdir /run/containers/1000/
+[root@demo01 ~]# cp -r /run/user/1000/containers/auth.json /run/containers/1000/
+[root@demo01 ~]# chown -R student:student  /run/containers/1000/
+
+skopeo inspect docker://registry.redhat.io/ubi8/php-72 | grep \"description
+        "description": "PHP 7.2 available as container is a base platform for building and running various PHP 7.2 applications and frameworks. PHP is an HTML-embedded scripting language. PHP attempts to make it easy for developers to write dynamically generated web pages. PHP also offers built-in database integration for several commercial and non-commercial database management systems, so writing a database-enabled webpage with PHP is fairly simple. The most common use of PHP coding is probably as a replacement for CGI scripts.",
