@@ -1,0 +1,35 @@
+#Containerfile
+#FROM Image Download registry path
+#RUN Instuctions of task or any commands
+#ADD To copy local file to This Image
+#EXPOSE Ports to listen
+#USER Privliges
+#CMD  provide defaults for an executing container
+
+FROM registry.access.redhat.com/ucat nginx.conf.sed
+s/80/8080/g
+bi8
+RUN yum install -y nginx
+
+ADD index.html  /usr/share/nginx/html
+ADD nginx.conf.sed /tmp
+RUN sed -i -f /tmp/nginx.conf.sed /etc/nginx/nginx.conf
+
+RUN touch /run/nginx.pid && chgrp -R 0 /var/log/nginx /run/nginx.pid && chmod -R g+rwx /var/log/nginx /run/nginx.pid
+
+EXPOSE 8080
+USER 1001
+CMD nginx -g "daemon off;"
+#nginx -g 'daemon off;'  (run in foreground:)
+#nginx (run in background:)
+
+###########################
+#cat index.html
+Hello Nginx
+##########################
+#cat nginx.conf.sed
+s/80/8080/g
+####################cmd##
+podman build -t nginx-demo .
+
+
